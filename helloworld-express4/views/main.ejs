@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/nsports.css' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/javascripts/main.js"></script>
+</head>
+<body>
+<h1><%= title %></h1>
+<br/>
+<a href="/users/logout">로그아웃</a>
+<fieldset>
+    <form method="get" id="searchForm">
+        <input type="text" name="keyword" autofocus required placeholder="팀 검색" />
+        <input type="submit" value="검색" />
+    </form>
+</fieldset>
+<div class="record_tbl" id="wfootballTeamRecordBody">
+    <table summary="팀 순위" cellspacing="0">
+        <caption>팀 순위</caption>
+        <colgroup>
+            <col width="45">
+            <col width="*">
+            <col width="80">
+            <col width="80">
+            <col width="80">
+            <col width="80">
+            <col width="80">
+            <col width="80">
+            <col width="80">
+            <col width="80">
+        </colgroup>
+        <thead>
+        <tr>
+            <th scope="col">
+                <div class="inner">
+                    <strong>순위</strong>
+                </div>
+            </th>
+            <th scope="col" class="align_l">
+                <div class="inner">
+                    <strong>팀</strong>
+                </div>
+            </th>
+            <th scope="col">
+                <div class="inner">
+                    <strong>경기수</strong>
+                </div>
+            </th>
+            <!-- [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 -->
+            <th scope="col" class="selected">
+                <a href="javascript:wfootballTeamRecordSortByColumn('gainPoint');" class="inner">
+                    <strong class="sort">승점</strong>
+                </a>
+            </th>
+            <th scope="col">
+                <a href="javascript:wfootballTeamRecordSortByColumn('won', 'lost', 'manyFew');" class="inner">
+                    <strong class="sort">승</strong>
+                </a>
+            </th>
+            <th scope="col">
+                <a href="javascript:wfootballTeamRecordSortByColumn('drawn', 'lost', 'manyFew');" class="inner">
+                    <strong class="sort">무</strong>
+                </a>
+            </th>
+            <th scope="col">
+                <a href="javascript:wfootballTeamRecordSortByColumn('lost', 'won', 'manyFew');" class="inner">
+                    <strong class="sort">패</strong>
+                </a>
+            </th>
+            <th scope="col">
+                <a href="javascript:wfootballTeamRecordSortByColumn('gainGoal', 'loseGoal', 'manyFew');" class="inner">
+                    <strong class="sort">득점</strong>
+                </a>
+            </th>
+            <th scope="col">
+                <a href="javascript:wfootballTeamRecordSortByColumn('loseGoal', 'gainGoal', 'manyFew');" class="inner">
+                    <strong class="sort">실점</strong>
+                </a>
+            </th>
+            <th scope="col">
+                <a href="javascript:wfootballTeamRecordSortByColumn('goalGap', 'gainGoal', 'manyMany');" class="inner">
+                    <strong class="sort">득실차</strong>
+                </a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <% for(var i = 0; i < epl.length; i++) { %>
+        <tr>
+            <!-- [D] 상위랭크는 best 클래스 추가 -->
+            <td class="num best">
+                <div class="inner champsLeague">
+                    <strong><%= epl[i].rank %></strong>
+
+                    <span class="state_bar1"><span class="blind">챔피언스 리그 직행</span></span>
+
+                </div>
+            </td>
+            <td class="align_l">
+                <div class="inner">
+                    <img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/11.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">
+                    <span class="name"><%= epl[i].name %></span>
+                </div>
+            </td>
+            <td>
+                <div class="inner">
+                    <span><%= epl[i].total %></span>
+                </div>
+            </td>
+            <!-- [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 -->
+            <td class="selected">
+                <div class="inner">
+                    <span><%= epl[i].winPoint %></span>
+                </div>
+            </td>
+            <td>
+                <div class="inner">
+                    <span><%= epl[i].win %></span>
+                </div>
+            </td>
+            <td>
+                <div class="inner">
+                    <span><%= epl[i].draw %></span>
+                </div>
+            </td>
+            <td>
+                <div class="inner">
+                    <span><%= epl[i].lose %></span>
+                </div>
+            </td>
+            <td>
+                <div class="inner">
+                    <span><%= epl[i].goals %></span>
+                </div>
+            </td>
+            <td>
+                <div class="inner">
+                    <span><%= epl[i].eat %></span>
+                </div>
+            </td>
+            <td>
+                <div class="inner">
+                    <span><%= epl[i].diff %></span>
+                </div>
+            </td>
+        </tr>
+        <% } %>
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner champsLeague">-->
+                    <!--<strong>2</strong>-->
+
+                    <!--<span class="state_bar1"><span class="blind">챔피언스 리그 직행</span></span>-->
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/12.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">맨체스터 유나이티드 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>29</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>9</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>2</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>2</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>28</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>6</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>22</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner champsLeague">-->
+                    <!--<strong>3</strong>-->
+
+                    <!--<span class="state_bar1"><span class="blind">챔피언스 리그 직행</span></span>-->
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/4.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">첼시 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>26</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>8</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>2</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>3</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>24</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>11</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner champsLeague">-->
+                    <!--<strong>4</strong>-->
+
+                    <!--<span class="state_bar1"><span class="blind">챔피언스 리그 직행</span></span>-->
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/1006.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">아스널 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>25</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>8</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>1</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>4</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>23</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>16</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>7</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner europaLeague">-->
+                    <!--<strong>5</strong>-->
+
+                    <!--<span class="state_bar3"><span class="blind">유로파 리그</span></span>-->
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/19.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">토트넘 핫스퍼 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>24</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>7</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>3</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>3</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>21</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>10</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>11</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner normal">-->
+                    <!--<strong>6</strong>-->
+
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/9.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">리버풀 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>23</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>6</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>5</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>2</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>25</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>18</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>7</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner normal">-->
+                    <!--<strong>7</strong>-->
+
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/70.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">번리 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>22</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>6</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>4</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>3</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>12</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>10</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>2</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner normal">-->
+                    <!--<strong>8</strong>-->
+
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/41.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">왓포드 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>21</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>6</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>3</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>4</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>22</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>21</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>1</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner normal">-->
+                    <!--<strong>9</strong>-->
+
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/6795.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">브라이튼 앤 호브 알비온 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>16</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>4</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>4</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>5</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>14</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>-1</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner normal">-->
+                    <!--<strong>10</strong>-->
+
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/18.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">사우샘프턴 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>16</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>4</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>4</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>5</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>15</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>-2</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner normal">-->
+                    <!--<strong>11</strong>-->
+
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/56.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">허더즈필드 타운 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>15</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>4</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>3</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>6</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>9</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>19</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>-10</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner normal">-->
+                    <!--<strong>12</strong>-->
+
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/29.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">레스터 시티 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>14</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>3</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>5</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>5</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>17</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>19</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>-2</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner normal">-->
+                    <!--<strong>13</strong>-->
+
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/23.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">AFC 본머스</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>14</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>4</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>2</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>7</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>11</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>14</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>-3</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner normal">-->
+                    <!--<strong>14</strong>-->
+
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/31.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">뉴캐슬 유나이티드 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>14</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>4</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>2</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>7</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>11</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>17</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>-6</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner normal">-->
+                    <!--<strong>15</strong>-->
+
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/38.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">스토크 시티 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>3</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>4</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>6</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>16</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>26</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>-10</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner normal">-->
+                    <!--<strong>16</strong>-->
+
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/8.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">에버턴 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>12</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>3</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>3</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>7</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>28</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>-15</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner normal">-->
+                    <!--<strong>17</strong>-->
+
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/42.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">웨스트 브로미치 알비온 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>11</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>2</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>5</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>6</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>10</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>19</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>-9</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner relegation">-->
+                    <!--<strong>18</strong>-->
+
+                    <!--<span class="state_bar4"><span class="blind">강등 직행</span></span>-->
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/43.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">웨스트햄 유나이티드 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>10</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>2</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>4</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>7</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>12</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>26</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>-14</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner relegation">-->
+                    <!--<strong>19</strong>-->
+
+                    <!--<span class="state_bar4"><span class="blind">강등 직행</span></span>-->
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/65.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">스완지 시티 AFC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>9</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>2</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>3</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>8</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>7</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>15</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>-8</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr class="last">-->
+            <!--&lt;!&ndash; [D] 상위랭크는 best 클래스 추가 &ndash;&gt;-->
+            <!--<td class="num ">-->
+                <!--<div class="inner relegation">-->
+                    <!--<strong>20</strong>-->
+
+                    <!--<span class="state_bar4"><span class="blind">강등 직행</span></span>-->
+
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td class="align_l">-->
+                <!--<div class="inner">-->
+                    <!--<img width="25" height="25" alt="" src="https://dthumb-phinf.pstatic.net/?src=http://imgsports.naver.net/images/emblem/new/worldfootball/default/5.png&amp;type=f25_25&amp;refresh=1" onerror="javascript:src='http://imgsports.naver.net/images/2016/pc/common/no.png'" class="emblem">-->
+                    <!--<span class="name">크리스탈 팰리스 FC</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>13</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--&lt;!&ndash; [D] 선택된 카테고리 활성화 강조 테두리 selected 클래스 추가 &ndash;&gt;-->
+            <!--<td class="selected">-->
+                <!--<div class="inner">-->
+                    <!--<span>8</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>2</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>2</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>9</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>8</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>25</span>-->
+                <!--</div>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<div class="inner">-->
+                    <!--<span>-17</span>-->
+                <!--</div>-->
+            <!--</td>-->
+        <!--</tr>-->
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

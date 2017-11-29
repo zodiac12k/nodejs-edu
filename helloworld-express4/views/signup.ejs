@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link type="text/css" rel="stylesheet"
+          href="https://codex.nflxext.com/%5E2.0.0/truthBundle/webui/0.0.1-shakti-css-12ea5c82/css/css/login%7CloginBase.less,pages%7Clogin%7CLogin.less/2/040I0_0i0f100F0O120-0P0R0Y/none/true/none">
+    <link type="text/css" rel="stylesheet"
+          href="https://codex.nflxext.com/%5E2.0.0/truthBundle/webui/0.0.1-shakti-css-12ea5c82/css/css/common%7CkoreanLineBreak.less/2/040I0_0i0f100F0O120-0P0R0Y/none/true/none">
+</head>
+<body class="minHeight" style>
+<div id="appMountPoint">
+    <div id="registration" class="regForm">
+    <div class="registrationmessage"><div class="registrationmessage-content registrationmessage-content-9"><span class="registrationmessage-primary">무약정으로 언제든지 해지하실 수 있습니다.</span><span class="registrationmessage-secondary"></span></div></div>
+    <h1 class="mainHd" id="androidRegAnchor">멤버십을 시작하시려면 지금 가입하세요</h1>
+    <div class="emailForm regOption"><h2 class="secHd">계정 등록하기</h2>
+        <form action="/main/upload" method="post" novalidate="" enctype="multipart/form-data">
+            <input type="hidden" name="action"
+                   value="registerAction">
+            <input
+                    type="hidden" name="authURL" value="1511916940985.XmffzsOZtKIacyuXVLwzQiT0Raw=">
+            <input type="hidden"
+                   name="withFields"
+                   value="email,password,planChoice,emailPreference">
+            <input
+                    type="hidden" name="planChoice" value="10338">
+            <div class="accountFields">
+                <label class="ui-label ui-input-label" id="lbl-email" placeholder="username">
+                <span
+                        class="ui-label-text">아이디</span>
+                    <input type="text" class="ui-text-input medium auto-email"
+                           name="username" id="username" tabindex="0">
+                </label>
+                <label
+                        class="ui-label ui-input-label" id="lbl-password" placeholder="password">
+                <span
+                        class="ui-label-text">4-50자 사이의 비밀번호를 입력하세요.</span>
+                    <input type="password"
+                           class="ui-text-input medium auto-password"
+                           name="password" id="password"
+                           tabindex="0">
+                </label>
+                <label
+                        class="ui-label ui-input-label" id="lbl-name" placeholder="name">
+                <span
+                        class="ui-label-text">이름을 입력하세요.</span>
+                    <input type="text"
+                           class="ui-text-input medium auto-password"
+                           name="name" id="name"
+                           tabindex="0">
+                </label>
+                <input type="file" name="file" >
+            </div>
+            <div class="emailConsent">
+                <div class="ui-binary-input inline"><input type="checkbox" class="" name="emailPreference"
+                                                           id="bxid_emailPreference_true" value="true"
+                                                           tabindex="0"><label
+                            for="bxid_emailPreference_true">예, Netflix 특별 할인 알림 메일을 보내주세요.</label>
+                    <div class="helper"></div>
+                </div>
+            </div>
+            <button class="btn btn-submit btn-large" type="submit" autocomplete="off" tabindex="0">
+                <!-- react-text: 193 -->
+                등록<!-- /react-text --></button>
+        </form>
+    </div>
+    </div>
+</div>
+</body>
+</html>
